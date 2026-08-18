@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/components/Cart/CartContext";
-import { createSupabaseBrowserClient } from "@/lib/supabase";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import styles from "./checkout.module.css";
 import Image from "next/image";
 
@@ -79,7 +79,7 @@ export default function CheckoutPage() {
     }
   };
 
-  const deliveryFee = 0; // Free delivery for now
+  const deliveryFee: number = 0; // Free delivery for now
   const total = cartTotal + deliveryFee;
 
   if (checkingAuth || items.length === 0) {
