@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+// ─── MENU ────────────────────────────────────────────────────────────────────
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  available   Boolean   @default(true)
+  comingSoon  Boolean   @default(false) @map("coming_soon")
+  sortOrder   Int       @default(0) @map("sort_order")
+  products    Product[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Product {
+  id          String           @id @default(cuid())
+  categoryId  String           @map("category_id")
+  category    Category         @relation(fields: [categoryId], references: [id])
+  name        String
+  slug        String           @unique
+  tagline     String
+  description String
+  imageUrl    String?          @map("image_url")
+  spiceLevel  Int              @default(3) @map("spice_level")
+  available   Boolean          @default(true)
+  featured    Boolean          @default(false)
+  sortOrder   Int              @default(0) @map("sort_order")
+  portions    ProductPortion[]
+  orderItems  OrderItem[]
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model ProductPortion {
+  id         String      @id @default(cuid())
+  productId  String      @map("product_id")
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label      String      // Regular, Large, Family
+  weight     String      // 150g, 300g, 600g
+  price      Int         // in LKR
+  available  Boolean     @default(true)
+  orderItems OrderItem[]
+
+  @@map("product_portions")
+}
+
+// ─── USERS ───────────────────────────────────────────────────────────────────
+
+model CustomerProfile {
+  id        String   @id          // matches Supabase auth.users.id (UUID)
+  name      String
+  phone     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  orders    Order[]
+
+  @@map("customer_profiles")
+}
+
+model AdminProfile {
+  id        String   @id           // matches Supabase auth.users.id (UUID)
+  name      String
+  role      AdminRole @default(ADMIN)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("admin_profiles")
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+}
+
+// ─── ORDERS ──────────────────────────────────────────────────────────────────
+
+model Order {
+  id              String      @id @default(cuid())
+  customerId      String      @map("customer_id")
+  customer        CustomerProfile @relation(fields: [customerId], references: [id])
+  status          OrderStatus @default(PENDING)
+  paymentMethod   String      @default("COD") @map("payment_method")
+  paymentStatus   String      @default("PENDING") @map("payment_status")
+  subtotal        Int         // LKR
+  deliveryFee     Int         @default(0) @map("delivery_fee")
+  discount        Int         @default(0)
+  total           Int
+  // Snapshot of delivery address at time of order
+  addressLine1    String      @map("address_line1")
+  addressLine2    String?     @map("address_line2")
+  city            String
+  notes           String?
+  items           OrderItem[]
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id           String         @id @default(cuid())
+  orderId      String         @map("order_id")
+  order        Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String         @map("product_id")
+  product      Product        @relation(fields: [productId], references: [id])
+  portionId    String         @map("portion_id")
+  portion      ProductPortion @relation(fields: [portionId], references: [id])
+  // Snapshots at time of order (prices may change)
+  productName  String         @map("product_name")
+  portionLabel String         @map("portion_label")
+  portionWeight String        @map("portion_weight")
+  unitPrice    Int            @map("unit_price")
+  quantity     Int
+  subtotal     Int
+
+  @@map("order_items")
+}
+
+// ─── CONTACT ─────────────────────────────────────────────────────────────────
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_submissions")
+}

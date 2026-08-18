@@ -1,0 +1,269 @@
+/* ─── Page Hero ─────────────────────────────────────────────── */
+.pageHero {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 140px 0 var(--space-16);
+}
+
+.heroContent {
+  max-width: 700px;
+}
+
+.pageTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--color-text-primary);
+  line-height: 1.05;
+}
+
+.titleAccent {
+  color: var(--color-brand-orange);
+}
+
+/* ─── Story ──────────────────────────────────────────────────── */
+.storySection {
+  padding: var(--space-24) 0;
+  background: var(--color-bg);
+}
+
+.storyGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+  align-items: center;
+}
+
+.storyImageWrap {
+  position: relative;
+  padding-bottom: 115%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.storyImg {
+  object-fit: cover;
+}
+
+.storyImageGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(255,92,26,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.storyContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.storyTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  line-height: 1.1;
+}
+
+.storyBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.storyBody p {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+}
+
+/* ─── Values ─────────────────────────────────────────────────── */
+.valuesSection {
+  background: var(--color-surface);
+  padding: var(--space-24) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.valuesHeader {
+  margin-bottom: var(--space-12);
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.valueCard {
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.valueIcon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.valueTitle {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.valueText {
+  font-size: 0.925rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+/* ─── Vision ─────────────────────────────────────────────────── */
+.visionSection {
+  background: var(--color-bg);
+  padding: var(--space-24) 0;
+}
+
+.visionInner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-16);
+  align-items: start;
+}
+
+.visionContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 600px;
+}
+
+.visionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  line-height: 1.05;
+}
+
+.visionAccent {
+  color: var(--color-brand-orange);
+}
+
+.visionText {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+}
+
+.visionSub {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.visionStats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.statCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-8);
+  text-align: center;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  transition: all var(--transition-base);
+}
+
+.statCard:hover {
+  border-color: rgba(255, 92, 26, 0.3);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.statValue {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--color-brand-orange);
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ─── CTA ────────────────────────────────────────────────────── */
+.ctaSection {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-16) 0;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+.ctaTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+}
+
+.ctaSub {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .storyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .storyImageWrap {
+    padding-bottom: 70%;
+  }
+
+  .valuesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .visionInner {
+    grid-template-columns: 1fr;
+  }
+
+  .visionStats {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .statCard {
+    min-width: 120px;
+  }
+}

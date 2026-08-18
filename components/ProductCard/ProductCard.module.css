@@ -1,0 +1,159 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: default;
+}
+
+/* Image */
+.imageWrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 65%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.image {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .image {
+  transform: scale(1.04);
+}
+
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(22, 22, 22, 0.9) 100%);
+  z-index: 1;
+}
+
+.spiceRow {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-4);
+  z-index: 2;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  flex: 1;
+}
+
+.tagline {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brand-orange);
+  margin-bottom: var(--space-1);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+}
+
+.description {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin-top: var(--space-2);
+}
+
+/* Portions */
+.portionSelector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.portionChip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  transition: all var(--transition-fast);
+  width: 100%;
+}
+
+.portionChip:hover {
+  background: var(--color-surface-hover);
+  border-color: rgba(255, 92, 26, 0.4);
+}
+
+.portionSelected {
+  background: rgba(255, 92, 26, 0.1);
+  border-color: var(--color-brand-orange);
+}
+
+.portionLabel {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  min-width: 60px;
+}
+
+.portionWeight {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  flex: 1;
+}
+
+.portionPrice {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.currency {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-right: 2px;
+}
+
+/* CTA */
+.cta {
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Compact variant */
+.compact .content {
+  padding: var(--space-4);
+}
+
+.compact .name {
+  font-size: 1.125rem;
+}
+
+.compact .portionSelector {
+  display: none;
+}
