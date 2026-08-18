@@ -95,7 +95,7 @@ export default async function HomePage() {
           </FadeIn>
 
           <div className={styles.productsGrid}>
-            {featuredProducts.map((product, i) => (
+            {featuredProducts.map((product: any, i: number) => (
               <FadeIn key={product.id} delay={i + 1}>
                 <ProductCard product={product} />
               </FadeIn>

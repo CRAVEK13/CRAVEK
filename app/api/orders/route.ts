@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Build order items with verified prices from DB (never trust client prices)
     const orderItemsData = items.map((item: { portionId: string; quantity: number }) => {
-      const portion = portions.find((p) => p.id === item.portionId)!;
+      const portion = portions.find((p: any) => p.id === item.portionId)!;
       return {
         productId: portion.product.id,
         portionId: portion.id,
