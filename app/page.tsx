@@ -5,7 +5,7 @@ import FadeIn from "@/components/FadeIn/FadeIn";
 import { prisma } from "@/lib/prisma";
 import styles from "./home.module.css";
 
-export const revalidate = 60; // revalidate every minute
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const featuredProducts = await prisma.product.findMany({

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Browse the CRAVEK menu. Bold, spicy, Sri Lankan-inspired devilled bites. Devilled Chicken, Devilled Prawns, Devilled Sausages.",
 };
 
-export const revalidate = 60; // revalidate every minute
+export const dynamic = "force-dynamic";
 
 export default async function MenuPage() {
   const [categories, products] = await Promise.all([
