@@ -20,12 +20,37 @@ export async function PUT(request: NextRequest, { params }: Params) {
   const { id } = await params;
   try {
     const body = await request.json();
-    const { portions, ...productData } = body;
 
-    const product = await prisma.product.update({
+    // Explicitly pick only valid scalar fields — never spread the whole body
+    // (the body may contain relation objects like `category`, `orderItems` etc.
+    // that Prisma will reject with a 500)
+    const {
+      portions,
+      name,
+      slug,
+      tagline,
+      description,
+      categoryId,
+      imageUrl,
+      spiceLevel,
+      available,
+      featured,
+      sortOrder,
+    } = body;
+
+    await prisma.product.update({
       where: { id },
       data: {
-        ...productData,
+        ...(name        !== undefined && { name }),
+        ...(slug        !== undefined && { slug }),
+        ...(tagline     !== undefined && { tagline }),
+        ...(description !== undefined && { description }),
+        ...(categoryId  !== undefined && { categoryId }),
+        ...(imageUrl    !== undefined && { imageUrl }),
+        ...(spiceLevel  !== undefined && { spiceLevel: Number(spiceLevel) }),
+        ...(available   !== undefined && { available }),
+        ...(featured    !== undefined && { featured }),
+        ...(sortOrder   !== undefined && { sortOrder: Number(sortOrder) }),
         updatedAt: new Date(),
       },
     });
@@ -36,11 +61,22 @@ export async function PUT(request: NextRequest, { params }: Params) {
         if (portion.id) {
           await prisma.productPortion.update({
             where: { id: portion.id },
-            data: { label: portion.label, weight: portion.weight, price: portion.price, available: portion.available },
+            data: {
+              label: portion.label,
+              weight: portion.weight,
+              price: Number(portion.price),
+              available: portion.available ?? true,
+            },
           });
         } else {
           await prisma.productPortion.create({
-            data: { productId: id, label: portion.label, weight: portion.weight, price: portion.price, available: true },
+            data: {
+              productId: id,
+              label: portion.label,
+              weight: portion.weight || "",
+              price: Number(portion.price),
+              available: true,
+            },
           });
         }
       }
