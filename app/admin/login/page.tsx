@@ -19,29 +19,51 @@ export default function AdminLoginPage() {
     try {
       const supabase = createSupabaseBrowserClient();
 
+      // Step 1: Authenticate with Supabase
       const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
       if (authError || !data.user) {
-        setError("Invalid email or password.");
+        setError(`Authentication failed: ${authError?.message || "Invalid email or password."}`);
         setLoading(false);
         return;
       }
 
-      // Verify this user is an admin
-      const res = await fetch("/api/admin/verify", { method: "POST" });
-      if (!res.ok) {
+      // Step 2: Verify admin role (with 15s timeout so it can't hang forever)
+      let res: Response;
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        res = await fetch("/api/admin/verify", { method: "POST", signal: controller.signal });
+        clearTimeout(timeoutId);
+      } catch (fetchErr: any) {
         await supabase.auth.signOut();
-        setError("Access denied. This account does not have admin privileges.");
+        if (fetchErr?.name === "AbortError") {
+          setError("Verification timed out. Check that DATABASE_URL is set in your Vercel environment variables.");
+        } else {
+          setError("Network error during verification. Please try again.");
+        }
         setLoading(false);
         return;
       }
 
-      // Set admin cookie (used by middleware)
-      document.cookie = `cravek_admin=${data.user.id}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        await supabase.auth.signOut();
+        if (res.status === 401) {
+          setError("Session error. Please refresh and try again.");
+        } else if (res.status === 403) {
+          setError("Access denied. Your account does not have admin privileges. Run /api/admin/setup first.");
+        } else {
+          setError(`Verify error ${res.status}: ${body?.error || "Unknown error"}`);
+        }
+        setLoading(false);
+        return;
+      }
 
+      // Step 3: Set admin cookie (used by middleware) and redirect
+      document.cookie = `cravek_admin=${data.user.id}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
       router.push("/admin");
-      router.refresh();
-    } catch {
-      setError("Login failed. Please try again.");
+    } catch (err: any) {
+      setError(`Login failed: ${err?.message || "Unknown error. Please try again."}`);
       setLoading(false);
     }
   };
