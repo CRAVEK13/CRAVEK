@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
 import { CartProvider } from "@/components/Cart/CartContext";
 import CartSidebar from "@/components/Cart/CartSidebar";
+import WhatsAppWidget from "@/components/WhatsAppWidget/WhatsAppWidget";
 
 export const metadata: Metadata = {
   title: {
@@ -101,6 +102,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <WhatsAppWidget />
         </CartProvider>
       </body>
     </html>

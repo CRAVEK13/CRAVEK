@@ -112,8 +112,27 @@
   justify-content: center;
 }
 
+.whatsappBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: #25D366;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  margin-bottom: var(--space-4);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.whatsappBtn:hover {
+  background: #1ebe5d;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 600px) {
-  .actions {
-    flex-direction: column;
-  }
+  .actions { flex-direction: column; }
+  .card { padding: var(--space-8) var(--space-6); }
 }
