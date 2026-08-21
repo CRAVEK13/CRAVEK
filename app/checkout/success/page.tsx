@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import styles from "./success.module.css";
 
-const WHATSAPP_NUMBER = "0703601400";
+const WHATSAPP_NUMBER = "94703601400";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
