@@ -1,8 +1,8 @@
-﻿"use client";
+"use client";
 import { useState, useEffect } from "react";
 import styles from "./WhatsAppWidget.module.css";
 
-const WHATSAPP_NUMBER = "943601400";
+const WHATSAPP_NUMBER = "94703601400";
 const DEFAULT_MESSAGE = "Hi CRAVEK! I would like to get in touch. 🌶️";
 
 interface WhatsAppWidgetProps {
