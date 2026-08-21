@@ -24,7 +24,7 @@ export default function WhatsAppWidget({ prefilledMessage }: WhatsAppWidgetProps
   if (!visible) return null;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.widgetWrapper}>
       {open && (
         <div className={styles.card} role="dialog" aria-label="Chat with CRAVEK on WhatsApp">
           <button
