@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/icon.png" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
