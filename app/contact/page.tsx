@@ -54,19 +54,19 @@ export default function ContactPage() {
     {
       icon: "📞",
       label: "Phone",
-      value: "[Coming soon]",
+      value: "[0703601400]",
       href: undefined,
     },
     {
       icon: "🕐",
       label: "Hours",
-      value: "[To be confirmed]",
+      value: "[Everyday from 12PM to 10PM]",
       href: undefined,
     },
     {
       icon: "🚚",
       label: "Delivery",
-      value: "Delivery only — Coming to you",
+      value: "Either us or UberEats",
       href: undefined,
     },
   ];
