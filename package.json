@@ -16,11 +16,13 @@
     "@supabase/supabase-js": "^2.112.3",
     "@types/nodemailer": "^8.0.1",
     "@types/pg": "^8.23.1",
+    "@types/react-datepicker": "^6.2.0",
     "leaflet": "^1.9.4",
     "next": "16.3.1",
     "nodemailer": "^9.0.5",
     "pg": "^8.23.0",
     "react": "19.2.8",
+    "react-datepicker": "^9.1.0",
     "react-dom": "19.2.8",
     "react-leaflet": "^5.0.0"
   },
