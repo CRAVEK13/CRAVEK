@@ -22,6 +22,8 @@ type CartContextType = {
   setIsCartOpen: (isOpen: boolean) => void;
   cartTotal: number;
   cartCount: number;
+  isDeliveryAvailable: boolean;
+  estimatedDeliveryTime: string | null;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -30,14 +32,30 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isDeliveryAvailable, setIsDeliveryAvailable] = useState(true);
+  const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState<string | null>(null);
 
-  // Load from local storage
+  // Load from local storage and fetch settings
   useEffect(() => {
     setIsMounted(true);
     const saved = localStorage.getItem("cravek_cart");
     if (saved) {
       try { setItems(JSON.parse(saved)); } catch {}
     }
+
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch("/api/settings");
+        if (res.ok) {
+          const data = await res.json();
+          setIsDeliveryAvailable(data.deliveryAvailable);
+          setEstimatedDeliveryTime(data.estimatedDeliveryTime);
+        }
+      } catch (err) {
+        console.error("Failed to fetch store settings", err);
+      }
+    };
+    fetchSettings();
   }, []);
 
   // Save to local storage
@@ -91,6 +109,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setIsCartOpen,
         cartTotal,
         cartCount,
+        isDeliveryAvailable,
+        estimatedDeliveryTime,
       }}
     >
       {children}

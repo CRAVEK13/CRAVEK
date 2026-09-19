@@ -132,7 +132,7 @@ export default function ContactPage() {
               </div>
 
               <div className={styles.orderBox}>
-                <p className={styles.orderBoxText}>Ready to order?</p>
+                <p className={styles.orderBoxText}>Ready to order? Simply hit on the whatsapp button to make the order via whatsapp.</p>
                 <a href="#order" className="btn btn-primary" id="contact-order-btn">
                   Order Now
                 </a>

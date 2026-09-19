@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function CartSidebar() {
-  const { isCartOpen, setIsCartOpen, items, updateQuantity, removeFromCart, cartTotal } = useCart();
+  const { isCartOpen, setIsCartOpen, items, updateQuantity, removeFromCart, cartTotal, isDeliveryAvailable, estimatedDeliveryTime } = useCart();
   const sidebarRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -89,12 +89,22 @@ export default function CartSidebar() {
               <span className={styles.totalPrice}>Rs. {cartTotal.toLocaleString()}</span>
             </div>
             <p className={styles.deliveryNote}>Delivery fee calculated at checkout</p>
+            {!isDeliveryAvailable && (
+              <div style={{ background: "rgba(255,92,26,0.1)", padding: "10px", borderRadius: "8px", marginBottom: "15px", border: "1px solid rgba(255,92,26,0.3)" }}>
+                <p style={{ color: "#FF5C1A", fontSize: "0.85rem", fontWeight: "bold", margin: 0 }}>
+                  Delivery is currently unavailable.
+                  {estimatedDeliveryTime && <><br/>Estimated availability: {new Date(estimatedDeliveryTime).toLocaleString()}</>}
+                </p>
+              </div>
+            )}
             <button 
               className={`btn btn-primary btn-lg ${styles.checkoutBtn}`} 
               onClick={() => {
                 setIsCartOpen(false);
                 router.push("/checkout");
               }}
+              disabled={!isDeliveryAvailable}
+              style={!isDeliveryAvailable ? { opacity: 0.5, cursor: "not-allowed" } : {}}
             >
               Go to Checkout
             </button>

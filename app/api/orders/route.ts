@@ -24,6 +24,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Delivery address is required." }, { status: 400 });
     }
 
+    // Check delivery availability
+    let settings = await prisma.storeSettings.findUnique({ where: { id: "default" } });
+    if (settings && !settings.deliveryAvailable) {
+      return NextResponse.json({ error: "Delivery is currently unavailable." }, { status: 400 });
+    }
+
     // Verify all portions exist and are available
     const portionIds = items.map((i: { portionId: string }) => i.portionId);
     const portions = await prisma.productPortion.findMany({

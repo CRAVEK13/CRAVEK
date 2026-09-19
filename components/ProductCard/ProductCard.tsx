@@ -10,7 +10,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, compact = false }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart, isDeliveryAvailable, estimatedDeliveryTime } = useCart();
   const [selectedPortion, setSelectedPortion] = useState(product.portions[0]);
 
   const handleAddToCart = () => {
@@ -91,8 +91,14 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
           aria-label={`Add ${product.name} to cart`}
           onClick={handleAddToCart}
           disabled={!selectedPortion || !selectedPortion.available}
+          style={!isDeliveryAvailable ? { display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: '1.2' } : {}}
         >
           {!selectedPortion?.available ? "Sold Out" : "Add to Cart"}
+          {!selectedPortion?.available ? null : !isDeliveryAvailable && (
+            <span style={{ fontSize: "0.75rem", opacity: 0.9, marginTop: "2px" }}>
+              (Delivery unavailable{estimatedDeliveryTime ? ` until ${new Date(estimatedDeliveryTime).toLocaleString()}` : ""})
+            </span>
+          )}
         </button>
       </div>
     </article>

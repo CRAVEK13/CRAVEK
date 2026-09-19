@@ -153,3 +153,14 @@ model ContactSubmission {
 
   @@map("contact_submissions")
 }
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+
+model StoreSettings {
+  id                    String    @id @default("default")
+  deliveryAvailable     Boolean   @default(true) @map("delivery_available")
+  estimatedDeliveryTime DateTime? @map("estimated_delivery_time")
+  updatedAt             DateTime  @updatedAt @map("updated_at")
+
+  @@map("store_settings")
+}
