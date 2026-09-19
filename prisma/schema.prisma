@@ -104,6 +104,8 @@ model Order {
   addressLine2    String?     @map("address_line2")
   city            String
   notes           String?
+  latitude        Float?
+  longitude       Float?
   items           OrderItem[]
   createdAt       DateTime    @default(now()) @map("created_at")
   updatedAt       DateTime    @updatedAt @map("updated_at")

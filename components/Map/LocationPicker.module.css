@@ -1,0 +1,47 @@
+.container {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.mapWrapper {
+  height: 300px;
+  width: 100%;
+  position: relative;
+  z-index: 1; /* prevent overlapping header */
+}
+
+.controls {
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.btn {
+  background-color: #f97316;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #ea580c;
+}
+
+.btn:disabled {
+  background-color: #fdba74;
+  cursor: not-allowed;
+}

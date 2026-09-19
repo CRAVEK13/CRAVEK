@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { items, addressLine1, addressLine2, city, notes } = body;
+    const { items, addressLine1, addressLine2, city, notes, latitude, longitude } = body;
 
     // Validate
     if (!items?.length) {
@@ -65,6 +65,8 @@ export async function POST(request: NextRequest) {
         addressLine2: addressLine2?.trim() || null,
         city: city.trim(),
         notes: notes?.trim() || null,
+        latitude: latitude ? parseFloat(latitude) : null,
+        longitude: longitude ? parseFloat(longitude) : null,
         items: { create: orderItemsData },
       },
       include: {

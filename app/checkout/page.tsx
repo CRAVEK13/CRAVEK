@@ -5,6 +5,7 @@ import { useCart } from "@/components/Cart/CartContext";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import styles from "./checkout.module.css";
 import Image from "next/image";
+import LocationPicker from "@/components/Map/LocationPicker";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function CheckoutPage() {
     addressLine2: "",
     city: "Colombo", // default for delivery area
     notes: "",
+    latitude: null as number | null,
+    longitude: null as number | null,
   });
 
   useEffect(() => {
@@ -42,6 +45,18 @@ export default function CheckoutPage() {
     }
   }, [items.length, checkingAuth, router]);
 
+  const handleLocationSelect = (data: { lat: number; lng: number; address?: { addressLine1: string; city: string } }) => {
+    setFormData((prev) => ({
+      ...prev,
+      latitude: data.lat,
+      longitude: data.lng,
+      ...(data.address ? {
+        addressLine1: data.address.addressLine1 || prev.addressLine1,
+        city: data.address.city || prev.city,
+      } : {}),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.addressLine1.trim() || !formData.city.trim()) {
@@ -62,6 +77,8 @@ export default function CheckoutPage() {
           addressLine2: formData.addressLine2,
           city: formData.city,
           notes: formData.notes,
+          latitude: formData.latitude,
+          longitude: formData.longitude,
         }),
       });
 
@@ -95,6 +112,14 @@ export default function CheckoutPage() {
         <div className={styles.mainCol}>
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>Delivery Details</h2>
+            
+            <div style={{ marginBottom: '1.5rem' }}>
+              <LocationPicker 
+                onLocationSelect={handleLocationSelect}
+                defaultLocation={formData.latitude && formData.longitude ? { lat: formData.latitude, lng: formData.longitude } : undefined}
+              />
+            </div>
+
             <form id="checkout-form" className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.field}>
                 <label className={styles.label}>Street Address</label>

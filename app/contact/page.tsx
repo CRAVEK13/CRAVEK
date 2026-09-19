@@ -54,13 +54,13 @@ export default function ContactPage() {
     {
       icon: "📞",
       label: "Phone",
-      value: "[0703601400]",
+      value: "0703601400",
       href: undefined,
     },
     {
       icon: "🕐",
       label: "Hours",
-      value: "[Everyday from 12PM to 10PM]",
+      value: "Everyday from 12PM to 10PM",
       href: undefined,
     },
     {
@@ -80,7 +80,7 @@ export default function ContactPage() {
             <p className="section-label">Get In Touch</p>
             <h1 className={styles.pageTitle}>Contact CRAVEK</h1>
             <p className={styles.pageSub}>
-              Questions, feedback, or just craving something? We&apos;d love to hear from you.
+              Questions, feedback, Customized Order or just craving something? We&apos;d love to hear from you.
             </p>
           </div>
         </div>
