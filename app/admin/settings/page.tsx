@@ -220,7 +220,7 @@ export default function AdminSettingsPage() {
               </label>
               <DatePicker
                 selected={estimatedDeliveryTime}
-                onChange={(date) => setEstimatedDeliveryTime(date)}
+                onChange={(date: Date | null) => setEstimatedDeliveryTime(date)}
                 showTimeSelect
                 timeFormat="HH:mm"
                 timeIntervals={15}
