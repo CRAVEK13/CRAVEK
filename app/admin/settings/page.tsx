@@ -56,10 +56,19 @@ export default function AdminSettingsPage() {
         setMessage("Settings saved successfully.");
         router.refresh();
       } else {
-        setMessage("Failed to save settings.");
+        const body = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+          // Session expired — redirect to login
+          router.push("/admin/login");
+          return;
+        } else if (res.status === 403) {
+          setMessage("Access denied: your account does not have admin privileges.");
+        } else {
+          setMessage(`Failed to save settings: ${body?.error ?? `Server error (${res.status})`}`);
+        }
       }
-    } catch (err) {
-      setMessage("An error occurred while saving.");
+    } catch (err: any) {
+      setMessage(`An error occurred while saving: ${err?.message ?? "Unknown error"}`);
     } finally {
       setSaving(false);
     }
