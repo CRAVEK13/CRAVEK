@@ -7,17 +7,35 @@ import styles from "./checkout.module.css";
 import Image from "next/image";
 import LocationPicker from "@/components/Map/LocationPicker";
 
+const STORE_LOCATION = { lat: 6.086703, lng: 80.145828 };
+const MAX_DELIVERY_DISTANCE_KM = 5;
+
+// Haversine formula to calculate distance in km
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const R = 6371; // Radius of the earth in km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+  const d = R * c; // Distance in km
+  return d;
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, cartTotal, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [error, setError] = useState("");
+  const [isOutsideDeliveryRange, setIsOutsideDeliveryRange] = useState(false);
 
   const [formData, setFormData] = useState({
     addressLine1: "",
     addressLine2: "",
-    city: "Colombo", // default for delivery area
+    city: "Galle", // default for delivery area
     notes: "",
     latitude: null as number | null,
     longitude: null as number | null,
@@ -46,6 +64,10 @@ export default function CheckoutPage() {
   }, [items.length, checkingAuth, router]);
 
   const handleLocationSelect = (data: { lat: number; lng: number; address?: { addressLine1: string; city: string } }) => {
+    const distance = calculateDistance(STORE_LOCATION.lat, STORE_LOCATION.lng, data.lat, data.lng);
+    
+    setIsOutsideDeliveryRange(distance > MAX_DELIVERY_DISTANCE_KM);
+
     setFormData((prev) => ({
       ...prev,
       latitude: data.lat,
@@ -59,6 +81,11 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isOutsideDeliveryRange) {
+      setError("Cannot place order: selected location is outside our 5km delivery range.");
+      return;
+    }
+    
     if (!formData.addressLine1.trim() || !formData.city.trim()) {
       setError("Please provide a complete delivery address.");
       return;
@@ -106,6 +133,10 @@ export default function CheckoutPage() {
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>Checkout</h1>
+      
+      <div className={styles.infoBanner} style={{ backgroundColor: '#e6f7ff', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', border: '1px solid #91d5ff', color: '#0050b3' }}>
+        <strong>Delivery Information:</strong> Delivery is currently available only within a 5km radius from our store in Galle.
+      </div>
 
       <div className={styles.layout}>
         {/* Left Col: Delivery Form */}
@@ -118,6 +149,11 @@ export default function CheckoutPage() {
                 onLocationSelect={handleLocationSelect}
                 defaultLocation={formData.latitude && formData.longitude ? { lat: formData.latitude, lng: formData.longitude } : undefined}
               />
+              {isOutsideDeliveryRange && (
+                <div style={{ marginTop: '0.75rem', padding: '0.75rem', backgroundColor: '#fff2f0', border: '1px solid #ffccc7', borderRadius: '6px', color: '#cf1322', fontWeight: 500 }}>
+                  ⚠️ Warning: Your selected location is outside our 5km delivery range. Please select a closer location to continue.
+                </div>
+              )}
             </div>
 
             <form id="checkout-form" className={styles.form} onSubmit={handleSubmit}>
@@ -217,7 +253,8 @@ export default function CheckoutPage() {
               form="checkout-form"
               type="submit"
               className={`btn btn-primary btn-lg ${styles.submitBtn}`}
-              disabled={loading}
+              disabled={loading || isOutsideDeliveryRange || !formData.latitude}
+              style={isOutsideDeliveryRange ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
             >
               {loading ? "Processing..." : "Place Order (COD)"}
             </button>
@@ -227,3 +264,4 @@ export default function CheckoutPage() {
     </div>
   );
 }
+

@@ -34,14 +34,20 @@ type MapComponentProps = {
 };
 
 export default function MapComponent({ onLocationSelect, defaultLocation }: MapComponentProps) {
-  // Default to Colombo
-  const colomboCenter = { lat: 6.9271, lng: 79.8612 };
-  const initialCenter = defaultLocation || colomboCenter;
+  // Default to Store location (Galle)
+  const storeLocation = { lat: 6.086703, lng: 80.145828 };
+  const initialCenter = defaultLocation || storeLocation;
   
   const [position, setPosition] = useState<{ lat: number; lng: number }>(initialCenter);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const markerRef = useRef<L.Marker>(null);
+
+  // Approximate bounds for Galle district to restrict map view
+  const galleBounds: L.LatLngBoundsExpression = [
+    [5.9, 79.9], // Southwest coordinates
+    [6.5, 80.6]  // Northeast coordinates
+  ];
 
   const reverseGeocode = async (lat: number, lng: number) => {
     try {
@@ -54,7 +60,7 @@ export default function MapComponent({ onLocationSelect, defaultLocation }: MapC
       if (data.address.suburb) addressParts.push(data.address.suburb);
       
       const addressLine1 = addressParts.join(", ") || data.name || "";
-      const city = data.address.city || data.address.town || data.address.village || data.address.county || "Colombo";
+      const city = data.address.city || data.address.town || data.address.village || data.address.county || "Galle";
       
       onLocationSelect({
         lat,
@@ -141,6 +147,9 @@ export default function MapComponent({ onLocationSelect, defaultLocation }: MapC
           zoom={13} 
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%" }}
+          maxBounds={galleBounds}
+          maxBoundsViscosity={1.0}
+          minZoom={10}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
